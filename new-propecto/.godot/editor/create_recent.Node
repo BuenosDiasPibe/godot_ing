@@ -1,0 +1,8 @@
+CanvasLayer
+Node2D
+Node
+CollisionShape2D
+Area2D
+ColorRect
+AnimatedSprite2D
+Window

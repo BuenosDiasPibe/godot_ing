@@ -1,0 +1,90 @@
+[gd_scene load_steps=11 format=3 uid="uid://ipo6coqahu5b"]
+
+[ext_resource type="Script" uid="uid://ssckobx44bb5" path="res://movement.gd" id="1_0e48y"]
+[ext_resource type="Texture2D" uid="uid://biq8lo14xbo0s" path="res://assets/SHADOW WIZARD MONEY GANG.jpg" id="1_q6r6c"]
+[ext_resource type="Texture2D" uid="uid://ggon55ayv6x7" path="res://assets/me fr fr.png" id="2_epypp"]
+[ext_resource type="Texture2D" uid="uid://bj7ab5jko5vbo" path="res://assets/second_player_sprite.png" id="3_epypp"]
+[ext_resource type="Texture2D" uid="uid://bxwqxtaoj73j3" path="res://assets/gruvbox_girl.png" id="4_0hol4"]
+[ext_resource type="Script" uid="uid://b6gaalusn8556" path="res://player.gd" id="4_q6r6c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0hol4"]
+size = Vector2(1080, 1079.9995)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_epypp"]
+atlas = ExtResource("3_epypp")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0hol4"]
+atlas = ExtResource("3_epypp")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d21ai"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_epypp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0hol4")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
+}]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="GruvboxGirl" type="Sprite2D" parent="."]
+modulate = Color(0.26028818, 0.26028818, 0.26028818, 1)
+z_index = -1
+texture_filter = 1
+position = Vector2(113.79311, 232.1839)
+scale = Vector2(0.6124006, 0.5638962)
+texture = ExtResource("4_0hol4")
+metadata/_edit_lock_ = true
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="GruvboxGirl"]
+follow_viewport_enabled = true
+follow_viewport_scale = 98.087
+
+[node name="Area2D" type="Area2D" parent="."]
+z_index = 1
+
+[node name="MeFrFr" type="Sprite2D" parent="Area2D"]
+texture_filter = 1
+position = Vector2(-60.91954, 136.78162)
+scale = Vector2(0.15272455, 0.062260546)
+texture = ExtResource("2_epypp")
+centered = false
+script = ExtResource("1_0e48y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+z_index = 1
+position = Vector2(21.551682, 170.40225)
+scale = Vector2(0.15272452, 0.06226054)
+shape = SubResource("RectangleShape2D_0hol4")
+
+[node name="Area2D2" type="Area2D" parent="."]
+z_index = 1
+
+[node name="player" type="AnimatedSprite2D" parent="Area2D2"]
+z_index = 1
+texture_filter = 1
+position = Vector2(146, -10.999992)
+scale = Vector2(10, 10)
+sprite_frames = SubResource("SpriteFrames_d21ai")
+animation = &"new_animation"
+frame_progress = 0.8402245
+script = ExtResource("4_q6r6c")
+
+[node name="Camera2D" type="Camera2D" parent="Area2D2/player"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(29.999996, 281)
+scale = Vector2(0.22899684, 0.08553989)
+texture = ExtResource("1_q6r6c")
+
+[node name="Parallax2D" type="Parallax2D" parent="Sprite2D"]
+scroll_scale = Vector2(1.735, 1.735)
+scroll_offset = Vector2(1.225, 0.465)
+repeat_size = Vector2(13.54, 0)
