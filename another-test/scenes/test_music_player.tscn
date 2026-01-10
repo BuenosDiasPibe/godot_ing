@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c5r1j571xap25" path="res://scenes/music_player_test_1.gd" id="1_wmssx"]
 
-[node name="TestMusicPlayer" type="Control" node_paths=PackedStringArray("container", "last", "pause", "next", "music_player")]
+[node name="TestMusicPlayer" type="Control" node_paths=PackedStringArray("container", "last", "pause", "next", "music_player", "progress_bar")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,6 +15,7 @@ last = NodePath("CanvasLayer/HBoxContainer/left")
 pause = NodePath("CanvasLayer/HBoxContainer/pause")
 next = NodePath("CanvasLayer/HBoxContainer/right")
 music_player = NodePath("AudioStreamPlayer")
+progress_bar = NodePath("CanvasLayer/HSlider")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -50,11 +51,30 @@ text = ">"
 offset_left = 176.0
 offset_top = 17.0
 offset_right = 983.0
-offset_bottom = 264.0
+offset_bottom = 363.71
 
 [node name="music_container" type="VBoxContainer" parent="CanvasLayer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="HSlider" type="HSlider" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -402.0
+offset_top = 67.0
+offset_right = 400.0
+offset_bottom = 107.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a Directory"
+file_mode = 2
+display_mode = 1
+access = 2

@@ -1,3 +1,7 @@
+FileDialog
+HSlider
+ProgressBar
+TextureProgressBar
 Label
 AudioStreamPlayer
 ScrollContainer
@@ -9,6 +13,3 @@ CanvasLayer
 VScrollBar
 HScrollBar
 WorldEnvironment      - Matches the "background" keyword.
-Sprite2D
-AudioStreamPlayer      - Matches the "music" keyword.
-Node2D

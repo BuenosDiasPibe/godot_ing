@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dioh1pgsjg0xh"]
+[gd_scene load_steps=3 format=3 uid="uid://dioh1pgsjg0xh"]
 
 [ext_resource type="Script" uid="uid://dkjugoklwkiuv" path="res://scenes/main.gd" id="1_sugp2"]
+[ext_resource type="Script" uid="uid://b75lvquhaa85" path="res://scenes/canvas_layer.gd" id="2_0wfyh"]
 
 [node name="Main" type="Node" node_paths=PackedStringArray("music", "canvasContainer", "pause")]
 script = ExtResource("1_sugp2")
@@ -11,6 +12,7 @@ pause = NodePath("CanvasLayer/HBoxContainer/Button")
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("2_0wfyh")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer"]
 offset_left = 23.0
