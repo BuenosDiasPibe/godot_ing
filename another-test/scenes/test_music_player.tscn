@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c5r1j571xap25" path="res://scenes/music_player_test_1.gd" id="1_wmssx"]
 
-[node name="TestMusicPlayer" type="Control" node_paths=PackedStringArray("container", "last", "pause", "next", "music_player", "progress_bar")]
+[node name="TestMusicPlayer" type="Control" node_paths=PackedStringArray("container", "last", "pause", "next", "music_player", "progress_bar", "fileDialog")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,6 +16,7 @@ pause = NodePath("CanvasLayer/HBoxContainer/pause")
 next = NodePath("CanvasLayer/HBoxContainer/right")
 music_player = NodePath("AudioStreamPlayer")
 progress_bar = NodePath("CanvasLayer/HSlider")
+fileDialog = NodePath("FileDialog")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -74,7 +75,10 @@ grow_vertical = 2
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="FileDialog" type="FileDialog" parent="."]
+oversampling_override = 1.0
 title = "Open a Directory"
+visible = true
+cancel_button_text = "close"
 file_mode = 2
-display_mode = 1
 access = 2
+use_native_dialog = true

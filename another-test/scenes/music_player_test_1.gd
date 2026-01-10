@@ -5,6 +5,7 @@ extends Control
 @export var next : Button
 @export var music_player : AudioStreamPlayer
 @export var progress_bar : HSlider
+@export var fileDialog : FileDialog
 
 #TODO: make the path changable
 var path : String = "/home/clumpl/Música/Lateralis - OTXO Original Soundtrack/"
@@ -15,26 +16,7 @@ var current_song : int = 0
 var stop : bool = false
 
 func _ready() -> void:
-	
-	songs_list = DirAccess.open(path).get_files()
-	assert(DirAccess.get_open_error() == 0, "An Error ocurred while opening a folder")
-	
-	var first_song : String = path+songs_list[current_song]
-	for song in songs_list:
-		if(song.get_extension() == "ogg"):
-			var l := Label.new()
-			l.text = song.get_basename()
-			container.add_child(l)
-		if(song.get_extension() == "png" || song.get_extension() == "jpg"):
-			songs_list.erase(song)
-	music_player.stream = AudioStreamOggVorbis.load_from_file(first_song)
-	
-	progress_bar.drag_started.connect(stop_it)
-	progress_bar.drag_ended.connect(slider)
-	
-	pause.pressed.connect(play_pause_music)
-	next.pressed.connect(next_song)
-	last.pressed.connect(last_song)
+	fileDialog.dir_selected.connect(get_dir)
 
 func _process(_delta: float) -> void:
 	if(music_player.playing && !stop):
@@ -42,6 +24,32 @@ func _process(_delta: float) -> void:
 		var m_time = music_player.stream.get_length()/100
 		if(m_playback_time != null):
 			progress_bar.value = m_playback_time / m_time
+
+func _do_ready():
+	songs_list = DirAccess.open(path).get_files()
+	assert(DirAccess.get_open_error() == 0, "An Error ocurred while opening a folder")
+	
+	var first_song : String = path+songs_list[current_song]
+	for song in songs_list:
+		if( song.get_extension() != "wav" &&
+			song.get_extension() != "ogg" &&
+			song.get_extension() != "mp3"
+		  ):
+			songs_list.erase(song)
+			print("deleted " + song)
+			continue
+		var l := Label.new()
+		l.text = song.get_basename()
+		container.add_child(l)
+	music_player.stream = AudioStreamOggVorbis.load_from_file(first_song)
+	assert(music_player.stream != null, "music stream is not setted, no music found in this folder")
+	
+	progress_bar.drag_started.connect(stop_it)
+	progress_bar.drag_ended.connect(slider)
+	
+	pause.pressed.connect(play_pause_music)
+	next.pressed.connect(next_song)
+	last.pressed.connect(last_song)
 
 #TODO: add this to AudioStreamPlayer's script
 func play_pause_music() -> void:
@@ -94,4 +102,8 @@ func stop_it():
 func slider(_holo) -> void:
 	stop = false
 	music_player.play((music_player.stream.get_length()/100)*progress_bar.value)
-	
+	_change_color(Color(0.0, 255.014, 0.0))
+
+func get_dir(pathh : String) -> void:
+	path = pathh+"/"
+	_do_ready()
