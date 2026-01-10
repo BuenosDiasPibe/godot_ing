@@ -1,0 +1,60 @@
+[gd_scene load_steps=2 format=3 uid="uid://ga1aakvvg3d6"]
+
+[ext_resource type="Script" uid="uid://c5r1j571xap25" path="res://scenes/music_player_test_1.gd" id="1_wmssx"]
+
+[node name="TestMusicPlayer" type="Control" node_paths=PackedStringArray("container", "last", "pause", "next", "music_player")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wmssx")
+container = NodePath("CanvasLayer/ScrollContainer/music_container")
+last = NodePath("CanvasLayer/HBoxContainer/left")
+pause = NodePath("CanvasLayer/HBoxContainer/pause")
+next = NodePath("CanvasLayer/HBoxContainer/right")
+music_player = NodePath("AudioStreamPlayer")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -215.065
+offset_right = 400.0
+offset_bottom = -15.065063
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="left" type="Button" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "<"
+
+[node name="pause" type="Button" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "| |"
+
+[node name="right" type="Button" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = ">"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer"]
+offset_left = 176.0
+offset_top = 17.0
+offset_right = 983.0
+offset_bottom = 264.0
+
+[node name="music_container" type="VBoxContainer" parent="CanvasLayer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

@@ -1,3 +1,5 @@
 res://scenes/main.tscn
 res://atlas_leve.tres
 res://scenes/main.gd
+res://scenes/test_music_player.tscn
+res://scenes/music_player_test_1.gd

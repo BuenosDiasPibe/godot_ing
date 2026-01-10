@@ -1,15 +1,14 @@
+Label
+AudioStreamPlayer
+ScrollContainer
+VBoxContainer
+GridContainer
 Button
 HBoxContainer
+CanvasLayer
+VScrollBar
+HScrollBar
 WorldEnvironment      - Matches the "background" keyword.
 Sprite2D
-Label
-CanvasLayer
 AudioStreamPlayer      - Matches the "music" keyword.
 Node2D
-SubViewport
-TileMapLayer
-Camera2D
-ColorRect
-TextureRect
-RichTextLabel
-BoxContainer
