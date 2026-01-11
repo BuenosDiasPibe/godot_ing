@@ -1,26 +1,28 @@
 extends Control
+#there's probably a better way to do this
+@export var music_player : AudioStreamPlayer
 @export var container : VBoxContainer
 @export var last : Button
 @export var pause : Button
 @export var next : Button
-@export var music_player : AudioStreamPlayer
-@export var progress_bar : HSlider
-@export var check_folder : Button
-@export var fileDialog : FileDialog
 
+@export var progress_bar : HSlider
+@export var fileDialog : FileDialog #
+
+@export var pause_button_tx : Texture2D
+@export var play_button_tx : Texture2D
+@export var check_folder : Button
 #TODO: make the path changable
 var path : String
 var _progress : float = 0.0
 var songs_list : PackedStringArray
 var current_song : int = 0
-
-var stop : bool = false
+var stop : bool = false # TODO: probably not needed
 
 func _ready() -> void:
 	fileDialog.dir_selected.connect(get_dir)
 	fileDialog.popup()
 	check_folder.pressed.connect(open_file_dialog)
-
 
 func get_dir(pathh : String) -> void: # doing all the stuff AFTER file is selected
 	path = pathh+"/"
@@ -56,31 +58,39 @@ func _after_file_access():
 	progress_bar.drag_ended.connect(slider)
 	
 	pause.pressed.connect(play_pause_music)
-	next.pressed.connect(next_song)
+	next.pressed.connect(next_song.bind(false))
 	last.pressed.connect(last_song)
+	music_player.finished.connect(next_song.bind(true))
 
 #TODO: add this to AudioStreamPlayer's script
 func play_pause_music() -> void:
 	var m_playback_time = music_player.get_playback_position()
 	var m_time = music_player.stream.get_length()/100
 	if(music_player.playing):
+		pause.icon = play_button_tx
+		
 		_progress = m_playback_time
 		_change_color(Color(255.014, 0.0, 0.0))
 		progress_bar.value = m_playback_time / m_time
 		music_player.stop()
 	else:
 		music_player.play(_progress)
+		pause.icon = pause_button_tx
 		_change_color(Color(0.0, 255.014, 0.0))
 
-func next_song():
+func next_song(is_music_player : bool):
 	progress_bar.value = 0
 	music_player.stop()
 	_change_color(Color.WHITE)
 	current_song = (current_song+1) % songs_list.size()
 	_change_color(Color(0.0, 255.014, 0.0))
 	var song_now = path + songs_list[current_song]
+	pause.icon = play_button_tx
 	load_music(song_now)
-	music_player.play()
+	if(!is_music_player):
+		print("hii")
+		music_player.play()
+		pause.icon = pause_button_tx
 	progress_bar.value = music_player.get_playback_position()
 
 func last_song():

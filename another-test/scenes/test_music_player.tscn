@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://ga1aakvvg3d6"]
+[gd_scene load_steps=6 format=3 uid="uid://ga1aakvvg3d6"]
 
 [ext_resource type="Script" uid="uid://c5r1j571xap25" path="res://scenes/music_player_test_1.gd" id="1_wmssx"]
+[ext_resource type="Texture2D" uid="uid://flugscexuj8q" path="res://assets/forward_button.png" id="2_e6hjv"]
+[ext_resource type="Texture2D" uid="uid://b5a5ovbada7mp" path="res://assets/pause_button.png" id="2_mnkje"]
+[ext_resource type="Texture2D" uid="uid://bs8cbc2n3kucj" path="res://assets/backwards_button.png" id="2_qoo44"]
+[ext_resource type="Texture2D" uid="uid://dhssagqh1ryeb" path="res://assets/play_button.png" id="3_qoo44"]
 
 [node name="TestMusicPlayer" type="Control" node_paths=PackedStringArray("container", "last", "pause", "next", "music_player", "progress_bar", "check_folder", "fileDialog")]
 layout_mode = 3
@@ -18,6 +22,8 @@ music_player = NodePath("AudioStreamPlayer")
 progress_bar = NodePath("CanvasLayer/HSlider")
 check_folder = NodePath("Button")
 fileDialog = NodePath("FileDialog")
+pause_button_tx = ExtResource("2_mnkje")
+play_button_tx = ExtResource("3_qoo44")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -37,17 +43,20 @@ grow_vertical = 0
 [node name="left" type="Button" parent="CanvasLayer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "<"
+icon = ExtResource("2_qoo44")
+icon_alignment = 1
 
 [node name="pause" type="Button" parent="CanvasLayer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "| |"
+icon = ExtResource("3_qoo44")
+icon_alignment = 1
 
 [node name="right" type="Button" parent="CanvasLayer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = ">"
+icon = ExtResource("2_e6hjv")
+icon_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer"]
 offset_left = 176.0

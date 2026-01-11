@@ -1,4 +1,4 @@
 res://scenes/test_music_player.tscn
 res://atlas_leve.tres
+res://shaderazo.gdshader
 res://scenes/music_player_test_1.gd
-res://scenes/main.tscn
