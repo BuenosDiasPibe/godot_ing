@@ -1,3 +1,6 @@
+AnimationPlayer
+Sprite2D
+TextureRect
 Button
 FileDialog
 HSlider
@@ -10,5 +13,3 @@ VBoxContainer
 GridContainer
 HBoxContainer
 CanvasLayer
-VScrollBar
-HScrollBar
