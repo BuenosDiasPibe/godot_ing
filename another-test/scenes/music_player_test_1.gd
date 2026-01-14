@@ -1,13 +1,14 @@
 extends Control 
+# TODO: OH MY GOD THIS IS A NIGHTMARE IM SO SORRY
 #there's probably a better way to do this
-@export var music_player : AudioStreamPlayer
+@export var music_player : AudioStreamPlayer # global
 @export var container : VBoxContainer
 @export var last : Button
 @export var pause : Button
 @export var next : Button
 
 @export var progress_bar : HSlider
-@export var fileDialog : FileDialog
+@export var fileDialog : FileDialog # global?
 # not needed in this script, TODO: change to pause button
 @export var pause_button_tx : Texture2D
 @export var play_button_tx : Texture2D
@@ -22,8 +23,8 @@ extends Control
 
 var path : String
 var _progress : float = 0.0
-var songs_list : PackedStringArray
-var current_song : int
+var songs_list : PackedStringArray # global
+var current_song : int # global?
 var stop : bool = false # TODO: probably not needed
 var _all_done : bool = false
 
@@ -178,7 +179,7 @@ func song_button(pathg : String, song_number : int)-> void:
 	pause.icon = pause_button_tx
 	music_player.play()
 
-func add_songs():
+func add_songs(): # merge with _after_file_access
 	var a := songs_list.size()
 	songs_list += DirAccess.open(path).get_files()
 	assert(DirAccess.get_open_error() == 0, "An Error ocurred while opening a folder")
