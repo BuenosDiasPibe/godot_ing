@@ -1,4 +1,4 @@
-extends Control
+extends Control 
 #there's probably a better way to do this
 @export var music_player : AudioStreamPlayer
 @export var container : VBoxContainer
@@ -14,8 +14,11 @@ extends Control
 
 # TODO: Add this to separate visual script
 @export var bg_txt : TextureRect
+@export var backround : ColorRect
 
 @export var check_folder : Button # crappy fix
+@export var add_music : Button # crappy fix
+@export var add_music_fd : FileDialog # oh my god please delete this
 
 var path : String
 var _progress : float = 0.0
@@ -25,14 +28,20 @@ var stop : bool = false # TODO: probably not needed
 var _all_done : bool = false
 
 func _ready() -> void:
-	fileDialog.dir_selected.connect(get_dir)
-	fileDialog.popup()
-	check_folder.pressed.connect(open_file_dialog)
+	fileDialog.dir_selected.connect(get_dir.bind(false))
+	add_music_fd.dir_selected.connect(get_dir.bind(true))
+	
+	check_folder.pressed.connect(fileDialog.popup)
+	add_music.pressed.connect(add_music_fd.popup)
 	music_player.finished.connect(next_song.bind(true))
 
-func get_dir(pathh : String) -> void: # doing all the stuff AFTER file is selected
+func get_dir(pathh : String, is_adding: bool) -> void: # doing all the stuff AFTER file is selected
 	path = pathh+"/"
-	_after_file_access()
+	if(is_adding):
+		print(path)
+		add_songs()
+	else:
+		_after_file_access()
 
 func _process(_delta: float) -> void:
 	if(music_player.playing && !stop):
@@ -45,6 +54,11 @@ func _after_file_access():
 	current_song = 0
 	songs_list = DirAccess.open(path).get_files()
 	assert(DirAccess.get_open_error() == 0, "An Error ocurred while opening a folder")
+	var a := 0
+	while(a < songs_list.size()):
+		var s = songs_list[a]
+		songs_list[a] = path+s
+		a+=1
 	# when i erase something from the list while iterating on it
 	# it could have unintended behaviour
 	if(!container.get_children().is_empty()):
@@ -55,18 +69,19 @@ func _after_file_access():
 		if(song.get_extension() != "wav" && song.get_extension() != "ogg" 
 									 	 && song.get_extension() != "mp3"):
 			if(song.get_extension() == "png" || song.get_extension() == "jpg"):
-				bg_txt.texture = ImageTexture.create_from_image(Image.load_from_file(path+song))
+				bg_txt.texture = ImageTexture.create_from_image(Image.load_from_file(song))
 			songs_list.erase(song)
 			print("deleted " + song)
 			continue
 		var l := Button.new()
-		l.text = song.get_basename()
-		l.pressed.connect(song_button.bind(path+song, s))
+		l.text = song.get_file()
+		l.pressed.connect(song_button.bind(song, s))
 		container.add_child(l)
 	assert(!songs_list.is_empty(), "you have no songs in this folder")
-	var first_song : String = path+songs_list[current_song]
+	var first_song : String = songs_list[current_song]
 	load_music(first_song)
 	assert(music_player.stream != null, "music stream is not setted, no music found in this folder")
+	
 	if(!_all_done):
 		_all_done = true
 		progress_bar.drag_started.connect(stop_it)
@@ -115,7 +130,7 @@ func last_song():
 	_change_color(Color(0.0, 255.014, 0.0))
 	if(current_song < 0):
 		current_song = songs_list.size()-1
-	var song_now = path + songs_list[current_song]
+	var song_now = songs_list[current_song]
 	load_music(song_now)
 	music_player.play()
 	progress_bar.value = music_player.get_playback_position()
@@ -138,7 +153,7 @@ func slider(_holo):
 	_change_color(Color(0.0, 255.014, 0.0))
 
 func load_music(holo : String): # func needs the full path or extension
-	var song_now =  path + songs_list[current_song]
+	var song_now =  songs_list[current_song]
 	match holo.get_extension():
 		"wav":
 			music_player.stream = AudioStreamWAV.load_from_file(song_now)
@@ -149,9 +164,6 @@ func load_music(holo : String): # func needs the full path or extension
 		_:
 			assert(false, "file type " + holo.get_extension() + " unknown")
 	assert(music_player.stream != null, "song selected has not been queried correctly")
-
-func open_file_dialog():
-	fileDialog.popup()
 	
 func song_button(pathg : String, song_number : int)-> void:
 	if(current_song == song_number):
@@ -165,3 +177,39 @@ func song_button(pathg : String, song_number : int)-> void:
 	progress_bar.value = music_player.get_playback_position()
 	pause.icon = pause_button_tx
 	music_player.play()
+
+func add_songs():
+	var a := songs_list.size()
+	songs_list += DirAccess.open(path).get_files()
+	assert(DirAccess.get_open_error() == 0, "An Error ocurred while opening a folder")
+	# when i erase something from the list while iterating on it
+	# it could have unintended behaviour
+	if(!container.get_children().is_empty()):
+		for chilld in container.get_children():
+			container.remove_child(chilld)
+	while(a < songs_list.size()):
+		var s = songs_list[a]
+		songs_list[a] = path+s
+		a+=1
+	for song in songs_list.duplicate():
+		var s := songs_list.find(song)
+		if(song.get_extension() != "wav" && song.get_extension() != "ogg" 
+									 	 && song.get_extension() != "mp3"):
+			songs_list.erase(song)
+			print("deleted " + song)
+			continue
+		var l := Button.new()
+		l.text = song.get_file()
+		l.pressed.connect(song_button.bind(song, s))
+		container.add_child(l)
+	if(!_all_done):
+		_all_done = true
+		progress_bar.drag_started.connect(stop_it)
+		progress_bar.drag_ended.connect(slider)
+		
+		pause.pressed.connect(play_pause_music)
+		next.pressed.connect(next_song.bind(false))
+		last.pressed.connect(last_song)
+		var first_song : String = songs_list[current_song]
+		load_music(first_song)
+		assert(music_player.stream != null, "music stream is not setted, no music found in this folder")
