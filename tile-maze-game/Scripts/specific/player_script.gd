@@ -19,6 +19,7 @@ var _initial_pos : Vector2
 func _ready() -> void:
 	_initial_pos = position
 	damageDetector.body_entered.connect(get_damaged)
+	damageDetector.area_entered.connect(get_damaged)
 
 func _process(_delta: float) -> void:
 	# spiritually stealed from https://kidscancode.org/godot_recipes/4.x/2d/grid_movement/index.html
@@ -31,13 +32,11 @@ func _process(_delta: float) -> void:
 	if(life <= 0):
 		position = _initial_pos
 		life = 1
-	if(damageDetector.get_overlapping_areas().size() != 0):
-		print(damageDetector.get_overlapping_areas())
 
 func collect_coin() -> void:
 	coin+=1
 	print(coin)
 
-func get_damaged(_body : Node2D) -> void:
+func get_damaged(_not_used) -> void:
 	life -=1
 	print("life: " + str(life))

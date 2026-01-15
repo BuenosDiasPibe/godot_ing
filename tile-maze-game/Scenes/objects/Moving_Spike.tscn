@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://bo0t2yorgqnyw"]
+
+[ext_resource type="Script" uid="uid://brgjarfsfpovs" path="res://Scenes/objects/mover.gd" id="1_5v8gq"]
+[ext_resource type="Texture2D" uid="uid://ci84u4x7rwrwo" path="res://Assets/Images/tiles.png" id="1_qgijt"]
+
+[sub_resource type="Curve2D" id="Curve2D_5v8gq"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -13.830002, -11.5, 0, 0, 0, 0, 66.17, -11.5, 0, 0, 0, 0, 66.17, 4.5, 0, 0, 0, 0, -5.830002, 4.5, 0, 0, 0, 0, 38.17, -19.5, 0, 0, 0, 0, -13.830002, -11.5)
+}
+point_count = 6
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5v8gq"]
+radius = 3.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a8266"]
+atlas = ExtResource("1_qgijt")
+region = Rect2(24, 0, 8, 8)
+
+[node name="Enemy" type="Path2D"]
+curve = SubResource("Curve2D_5v8gq")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+position = Vector2(-13.830002, -11.5)
+script = ExtResource("1_5v8gq")
+
+[node name="MovingSpike" type="Area2D" parent="PathFollow2D"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/MovingSpike"]
+shape = SubResource("CircleShape2D_5v8gq")
+
+[node name="Sprite2D" type="Sprite2D" parent="PathFollow2D/MovingSpike"]
+texture = SubResource("AtlasTexture_a8266")

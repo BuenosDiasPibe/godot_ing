@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://copsyfgul5h4u"]
 
-[ext_resource type="Script" uid="uid://x0v23uyk6cgb" path="res://Scenes/objects/coin.gd" id="1_qw83e"]
+[ext_resource type="Script" uid="uid://x0v23uyk6cgb" path="res://Scripts/specific/coin.gd" id="1_qw83e"]
 [ext_resource type="Texture2D" uid="uid://ci84u4x7rwrwo" path="res://Assets/Images/tiles.png" id="2_maump"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jw4ed"]
